@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface GarcomRepository extends JpaRepository<Garcom, Long> {
-//    List<Garcom> findByNome(String name);
+
 }

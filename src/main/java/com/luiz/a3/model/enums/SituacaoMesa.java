@@ -8,9 +8,7 @@ public enum SituacaoMesa {
 
     final private String valor;
 
-    SituacaoMesa(
-        final String valor
-    ) {
+    SituacaoMesa(final String valor) {
         this.valor = valor;
     }
 
