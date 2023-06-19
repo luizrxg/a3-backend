@@ -22,43 +22,54 @@ public class Mesa {
     @Column(name = "id_garcom", columnDefinition = "int")
     private Long idGarcom;
 
+    @Column(name = "id_garcom", columnDefinition = "int")
+    private String nomeGarcom;
+
     public Long getId() {
         return id;
-    }
-
-    public Long getNumero() {
-        return numero;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
+    public Long getNumero() {
+        return numero;
+    }
+
     public void setNumero(Long numero) {
         this.numero = numero;
-    }
-
-    public void setSituacao(String situacao) {
-        this.situacao = situacao;
-    }
-
-    public void setCapacidadeMaxima(Long capacidadeMaxima) {
-        this.capacidadeMaxima = capacidadeMaxima;
-    }
-
-    public void setIdGarcom(Long idGarcom) {
-        this.idGarcom = idGarcom;
     }
 
     public String getSituacao() {
         return situacao;
     }
 
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
+    }
+
     public Long getCapacidadeMaxima() {
         return capacidadeMaxima;
     }
 
+    public void setCapacidadeMaxima(Long capacidadeMaxima) {
+        this.capacidadeMaxima = capacidadeMaxima;
+    }
+
     public Long getIdGarcom() {
         return idGarcom;
+    }
+
+    public void setIdGarcom(Long idGarcom) {
+        this.idGarcom = idGarcom;
+    }
+
+    public String getNomeGarcom() {
+        return nomeGarcom;
+    }
+
+    public void setNomeGarcom(String nomeGarcom) {
+        this.nomeGarcom = nomeGarcom;
     }
 }

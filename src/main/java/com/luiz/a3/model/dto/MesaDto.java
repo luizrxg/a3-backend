@@ -1,10 +1,6 @@
 package com.luiz.a3.model.dto;
 
-import com.luiz.a3.model.entity.Garcom;
 import com.luiz.a3.model.entity.Mesa;
-import com.luiz.a3.model.enums.SituacaoMesa;
-
-import java.util.Optional;
 
 public class MesaDto {
 
@@ -13,14 +9,18 @@ public class MesaDto {
     private String situacao;
     private Long capacidadeMaxima;
     private Long idGarcom;
+    private String nomeGarcom;
 
-    public static MesaDto converter(Mesa m) {
+    public static MesaDto converter(
+            Mesa m
+    ) {
         var mesa = new MesaDto();
         mesa.setId(m.getId());
         mesa.setNumero(m.getNumero());
         mesa.setSituacao(m.getSituacao());
         mesa.setCapacidadeMaxima(m.getCapacidadeMaxima());
         mesa.setIdGarcom(m.getIdGarcom());
+        mesa.setNomeGarcom(m.getNomeGarcom());
         return mesa;
     }
 
@@ -44,6 +44,8 @@ public class MesaDto {
         this.idGarcom = idGarcom;
     }
 
+    public void setNomeGarcom(String nomeGarcom) { this.nomeGarcom = nomeGarcom; }
+
     public Long getId() {
         return id;
     }
@@ -63,4 +65,6 @@ public class MesaDto {
     public Long getIdGarcom() {
         return idGarcom;
     }
+
+    public String getNomeGarcom() { return nomeGarcom; }
 }

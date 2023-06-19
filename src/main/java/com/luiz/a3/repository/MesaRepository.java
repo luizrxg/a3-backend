@@ -14,4 +14,6 @@ public interface MesaRepository extends JpaRepository<Mesa, Long> {
     Mesa findByNumero(Long numero);
 
     List<Mesa> findBySituacao(String situacao);
+
+    List<Mesa> findAllByIdGarcom(Long idGarcom);
 }

@@ -1,7 +1,6 @@
 package com.luiz.a3.controller;
 
 import com.luiz.a3.model.dto.MesaDto;
-import com.luiz.a3.model.dto.MesaLivreDto;
 import com.luiz.a3.model.entity.Mesa;
 import com.luiz.a3.repository.GarcomRepository;
 import com.luiz.a3.repository.MesaRepository;
@@ -11,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.luiz.a3.model.enums.SituacaoMesa.LIVRE;
+import static com.luiz.a3.model.enums.SituacaoMesa.OCUPADA;
 
 @RestController
 @RequestMapping("/mesa")
@@ -20,8 +20,8 @@ public class MesaController {
     private final GarcomRepository garcomRepository;
 
     public MesaController(
-        MesaRepository mesaRepository,
-        GarcomRepository garcomRepository
+            MesaRepository mesaRepository,
+            GarcomRepository garcomRepository
     ) {
         this.mesaRepository = mesaRepository;
         this.garcomRepository = garcomRepository;
@@ -38,7 +38,7 @@ public class MesaController {
 
     @GetMapping("/{numero}")
     public MesaDto findByNumero(
-        @PathVariable("numero") Long numero
+            @PathVariable("numero") Long numero
     ) {
         var mesa = mesaRepository.findByNumero(numero);
         return MesaDto.converter(mesa);
@@ -46,7 +46,7 @@ public class MesaController {
 
     @PostMapping("/")
     public void saveMesa(
-        @RequestBody MesaDto mesa
+            @RequestBody MesaDto mesa
     ) {
         var m = new Mesa();
         m.setId(mesa.getId());
@@ -58,15 +58,49 @@ public class MesaController {
     }
 
     @GetMapping("/livres")
-    public List<MesaLivreDto> findMesasLivres() {
-        var mesas = mesaRepository.findBySituacao(LIVRE.getValor());
-        return mesas
-            .stream()
-            .map(it -> {
-                var garcom = garcomRepository.findById(it.getIdGarcom());
-                return MesaLivreDto.converter(it, garcom.isPresent() ? garcom.get().getNome() : "");
-            }).collect(Collectors.toList());
+    public List<MesaDto> findMesasLivres() {
+        return findMesasBySituacao(LIVRE.getValor());
     }
 
+    @GetMapping("/ocupadas")
+    public List<MesaDto> findMesasOcupadas() {
+        return findMesasBySituacao(OCUPADA.getValor());
+    }
 
+    @GetMapping("/{cap}")
+    public List<MesaDto> findMesasPorCapacidadeMaxima(@PathVariable("cap") Long cap) {
+        return mesaRepository
+            .findAll()
+            .stream()
+            .filter(it -> it.getCapacidadeMaxima() >= cap)
+            .map(MesaDto::converter)
+            .collect(Collectors.toList());
+    }
+
+    @GetMapping("/ocupadas-garcom/{id}")
+    public List<MesaDto> findMesasOcupadasGarcom(@PathVariable("id") Long id) {
+        return mesaRepository
+            .findAllByIdGarcom(id)
+            .stream()
+            .filter(it -> it.getSituacao() == OCUPADA.getValor())
+            .map(MesaDto::converter)
+            .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{idGarcom}")
+    public List<MesaDto> findMesasByGarcom(@PathVariable("id") Long id) {
+        return mesaRepository
+            .findAllByIdGarcom(id)
+            .stream()
+            .map(MesaDto::converter)
+            .collect(Collectors.toList());
+    }
+
+    public List<MesaDto> findMesasBySituacao(String situacao) {
+        return mesaRepository
+            .findBySituacao(situacao)
+            .stream()
+            .map(MesaDto::converter)
+            .collect(Collectors.toList());
+    }
 }

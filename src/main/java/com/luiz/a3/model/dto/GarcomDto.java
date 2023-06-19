@@ -5,8 +5,8 @@ import com.luiz.a3.model.entity.Garcom;
 import java.time.LocalDate;
 
 public class GarcomDto {
-    private Long id;
 
+    private Long id;
     private String nome;
     private Long cpf;
     private LocalDate dataNascimento;
