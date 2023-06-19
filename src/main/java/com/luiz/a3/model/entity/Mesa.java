@@ -3,8 +3,8 @@ package com.luiz.a3.model.entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "mesa")
 public class Mesa {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "int", nullable = false)
@@ -16,10 +16,10 @@ public class Mesa {
     @Column(name = "situacao", columnDefinition = "varchar(10)", nullable = false)
     private String situacao;
 
-    @Column(name = "capacidadeMaxima", columnDefinition = "int", nullable = false)
+    @Column(name = "capacidade_maxima", columnDefinition = "int", nullable = false)
     private Long capacidadeMaxima;
 
-    @Column(name = "idGarcom", columnDefinition = "int")
+    @Column(name = "id_garcom", columnDefinition = "int")
     private Long idGarcom;
 
     public Long getId() {

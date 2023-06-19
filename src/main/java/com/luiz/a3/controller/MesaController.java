@@ -20,8 +20,8 @@ public class MesaController {
     private final GarcomRepository garcomRepository;
 
     public MesaController(
-            MesaRepository mesaRepository,
-            GarcomRepository garcomRepository
+        MesaRepository mesaRepository,
+        GarcomRepository garcomRepository
     ) {
         this.mesaRepository = mesaRepository;
         this.garcomRepository = garcomRepository;
@@ -31,14 +31,14 @@ public class MesaController {
     public List<MesaDto> findAll() {
         var mesas = mesaRepository.findAll();
         return mesas
-                .stream()
-                .map(MesaDto::converter)
-                .collect(Collectors.toList());
+            .stream()
+            .map(MesaDto::converter)
+            .collect(Collectors.toList());
     }
 
     @GetMapping("/{numero}")
     public MesaDto findByNumero(
-            @PathVariable("numero") Long numero
+        @PathVariable("numero") Long numero
     ) {
         var mesa = mesaRepository.findByNumero(numero);
         return MesaDto.converter(mesa);
@@ -46,7 +46,7 @@ public class MesaController {
 
     @PostMapping("/")
     public void saveMesa(
-            @RequestBody MesaDto mesa
+        @RequestBody MesaDto mesa
     ) {
         var m = new Mesa();
         m.setId(mesa.getId());
@@ -61,11 +61,11 @@ public class MesaController {
     public List<MesaLivreDto> findMesasLivres() {
         var mesas = mesaRepository.findBySituacao(LIVRE.getValor());
         return mesas
-                .stream()
-                .map( it ->
-                    MesaLivreDto.converter(it, it.getIdGarcom())
-                )
-                .collect(Collectors.toList());
+            .stream()
+            .map(it -> {
+                var garcom = garcomRepository.findById(it.getIdGarcom());
+                return MesaLivreDto.converter(it, garcom.isPresent() ? garcom.get().getNome() : "");
+            }).collect(Collectors.toList());
     }
 
 
