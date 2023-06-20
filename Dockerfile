@@ -13,6 +13,6 @@ COPY /target/spring-boot*.jar a3.jar
 SHELL ["/bin/sh", "-c"]
 
 EXPOSE 5005
-EXPOSE 8080
+EXPOSE 9000
 
 CMD java ${ADDITIONAL_OPTS} -jar a3.jar --spring.profiles.active=${PROFILE}

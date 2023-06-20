@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface MesaRepository extends JpaRepository<Mesa, Long> {
+
     Mesa findByNumero(Long numero);
 
     List<Mesa> findBySituacao(String situacao);

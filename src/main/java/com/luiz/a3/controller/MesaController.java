@@ -2,8 +2,8 @@ package com.luiz.a3.controller;
 
 import com.luiz.a3.model.dto.MesaDto;
 import com.luiz.a3.model.entity.Mesa;
-import com.luiz.a3.repository.GarcomRepository;
-import com.luiz.a3.repository.MesaRepository;
+import com.luiz.a3.service.GarcomService;
+import com.luiz.a3.service.MesaService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,91 +16,82 @@ import static com.luiz.a3.model.enums.SituacaoMesa.OCUPADA;
 @RequestMapping("/mesa")
 public class MesaController {
 
-    private final MesaRepository mesaRepository;
-    private final GarcomRepository garcomRepository;
+    private final MesaService mesaService;
+    private final GarcomService garcomService;
 
     public MesaController(
-            MesaRepository mesaRepository,
-            GarcomRepository garcomRepository
+            final MesaService mesaService,
+            final GarcomService garcomService
     ) {
-        this.mesaRepository = mesaRepository;
-        this.garcomRepository = garcomRepository;
+        this.mesaService = mesaService;
+        this.garcomService = garcomService;
     }
 
+
+    //GET
     @GetMapping("/")
     public List<MesaDto> findAll() {
-        var mesas = mesaRepository.findAll();
-        return mesas
-            .stream()
-            .map(MesaDto::converter)
-            .collect(Collectors.toList());
+        return mesaService.findAll();
     }
 
     @GetMapping("/{numero}")
-    public MesaDto findByNumero(
-            @PathVariable("numero") Long numero
-    ) {
-        var mesa = mesaRepository.findByNumero(numero);
-        return MesaDto.converter(mesa);
-    }
-
-    @PostMapping("/")
-    public void saveMesa(
-            @RequestBody MesaDto mesa
-    ) {
-        var m = new Mesa();
-        m.setId(mesa.getId());
-        m.setNumero(mesa.getNumero());
-        m.setSituacao(mesa.getSituacao());
-        m.setCapacidadeMaxima(mesa.getCapacidadeMaxima());
-        m.setIdGarcom(mesa.getIdGarcom());
-        mesaRepository.save(m);
+    public MesaDto findByNumero(@PathVariable("numero") Long numero) {
+        return mesaService.findByNumero(numero);
     }
 
     @GetMapping("/livres")
     public List<MesaDto> findMesasLivres() {
-        return findMesasBySituacao(LIVRE.getValor());
+        return mesaService.findBySituacao(LIVRE.getValor());
     }
 
     @GetMapping("/ocupadas")
     public List<MesaDto> findMesasOcupadas() {
-        return findMesasBySituacao(OCUPADA.getValor());
+        return mesaService.findBySituacao(OCUPADA.getValor());
     }
 
     @GetMapping("/{cap}")
     public List<MesaDto> findMesasPorCapacidadeMaxima(@PathVariable("cap") Long cap) {
-        return mesaRepository
-            .findAll()
-            .stream()
-            .filter(it -> it.getCapacidadeMaxima() >= cap)
-            .map(MesaDto::converter)
-            .collect(Collectors.toList());
+        return mesaService.findMesasPorCapacidadeMaxima(cap);
+
     }
 
     @GetMapping("/ocupadas-garcom/{id}")
     public List<MesaDto> findMesasOcupadasGarcom(@PathVariable("id") Long id) {
-        return mesaRepository
-            .findAllByIdGarcom(id)
-            .stream()
-            .filter(it -> it.getSituacao() == OCUPADA.getValor())
-            .map(MesaDto::converter)
-            .collect(Collectors.toList());
+        return mesaService.findMesasOcupadasGarcom(id);
     }
 
     @GetMapping("/{idGarcom}")
-    public List<MesaDto> findMesasByGarcom(@PathVariable("id") Long id) {
-        return mesaRepository
-            .findAllByIdGarcom(id)
-            .stream()
-            .map(MesaDto::converter)
-            .collect(Collectors.toList());
+    public List<MesaDto> findMesasByGarcom(@PathVariable("idGarcom") Long id) {
+        return mesaService.findMesasByGarcom(id);
     }
 
-    public List<MesaDto> findMesasBySituacao(String situacao) {
-        return mesaRepository
-            .findBySituacao(situacao)
-            .stream()
-            .map(MesaDto::converter)
-            .collect(Collectors.toList());
+
+    //POST
+    @PostMapping("/")
+    public void cadastrarMesa(@RequestBody MesaDto mesa) {
+        mesaService.cadastrarMesa(mesa);
+    }
+
+    @PostMapping("/{id}&{situacao}")
+    public void alterarSituacaoMesa(
+            @PathVariable("id") Long id,
+            @PathVariable("situacao") String situacao
+    ) {
+        mesaService.alterarSituacaoMesa(id, situacao);
+    }
+
+    @PostMapping("/{id}&{situacao}")
+    public void alterarGarcomMesa(
+            @PathVariable("id") Long id,
+            @PathVariable("idGarcom") Long idGarcom
+    ) {
+        mesaService.alterarGarcomMesa(id, idGarcom);
+    }
+
+
+    //DELETE
+    @DeleteMapping("/{id}")
+    public void deleteMesa(@PathVariable("id") Long id) {
+        mesaService.deleteById(id);
     }
 }

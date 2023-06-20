@@ -10,7 +10,7 @@ public class Mesa {
     @Column(name = "id", columnDefinition = "int", nullable = false)
     private Long id;
 
-    @Column(name = "numero", columnDefinition = "int", nullable = false)
+    @Column(name = "numero", columnDefinition = "int", nullable = false, unique = true)
     private Long numero;
 
     @Column(name = "situacao", columnDefinition = "varchar(10)", nullable = false)
@@ -22,7 +22,7 @@ public class Mesa {
     @Column(name = "id_garcom", columnDefinition = "int")
     private Long idGarcom;
 
-    @Column(name = "id_garcom", columnDefinition = "int")
+    @Column(name = "nome_garcom", columnDefinition = "int")
     private String nomeGarcom;
 
     public Long getId() {

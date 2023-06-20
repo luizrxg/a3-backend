@@ -3,11 +3,11 @@ package com.luiz.a3.model.dto;
 public class GarcomQtdMesasDto {
 
     private GarcomDto garcom;
-    private int qtd;
+    private long qtd;
 
     public static GarcomQtdMesasDto converter(
         final GarcomDto g,
-        final int qtd
+        final long qtd
     ) {
         var garcom = new GarcomQtdMesasDto();
         garcom.setGarcom(g);
@@ -23,11 +23,11 @@ public class GarcomQtdMesasDto {
         this.garcom = garcom;
     }
 
-    public int getQtd() {
+    public long getQtd() {
         return qtd;
     }
 
-    public void setQtd(int qtd) {
+    public void setQtd(long qtd) {
         this.qtd = qtd;
     }
 }
