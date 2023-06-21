@@ -1,7 +1,9 @@
 com\luiz\a3\model\entity\Mesa.class
+com\luiz\a3\service\GarcomService.class
 com\luiz\a3\util\Constants.class
 com\luiz\a3\controller\GarcomController.class
 com\luiz\a3\repository\GarcomRepository.class
+com\luiz\a3\service\MesaService.class
 com\luiz\a3\model\dto\GarcomQtdMesasDto.class
 com\luiz\a3\model\dto\MesaDto.class
 com\luiz\a3\model\enums\SituacaoMesa.class
